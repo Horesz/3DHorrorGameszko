@@ -263,9 +263,6 @@ PrefabInstance:
       addedObject: {fileID: 5358103029357429357}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c22d296d434cf54380cc9acfb2c7305, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 805049726746288733}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c22d296d434cf54380cc9acfb2c7305, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1801876276895907210}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c22d296d434cf54380cc9acfb2c7305, type: 3}
       insertIndex: -1
@@ -350,31 +347,6 @@ MonoBehaviour:
   staminaRecoveryRate: 5
   breathingSound: {fileID: 0}
   fearLevel: 0
---- !u!114 &805049726746288733
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8202162988410841196}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c0b8a4c87fd1b8419a7efe4f1798a07, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxSlots: 3
-  itemHoldPosition: {fileID: 8945495037612861020}
-  itemHoldDistance: 1.5
-  itemHoldOffset: {x: 0.3, y: -0.2, z: 0}
-  broomPrefab: {fileID: 0}
-  keyPrefab: {fileID: 0}
-  pickupRange: 4
-  pickupLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  pickupKey: 101
-  playerCamera: {fileID: 5171979789762274409}
-  hudManager: {fileID: 0}
 --- !u!82 &1801876276895907210
 AudioSource:
   m_ObjectHideFlags: 0
@@ -490,10 +462,5 @@ MonoBehaviour:
 --- !u!4 &8833880399636984534 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2c22d296d434cf54380cc9acfb2c7305, type: 3}
-  m_PrefabInstance: {fileID: 9012413233739896125}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &8945495037612861020 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 87343285990306657, guid: 2c22d296d434cf54380cc9acfb2c7305, type: 3}
   m_PrefabInstance: {fileID: 9012413233739896125}
   m_PrefabAsset: {fileID: 0}
