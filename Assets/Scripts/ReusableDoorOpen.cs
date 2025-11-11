@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class ReusableDoorController : MonoBehaviour
+public class DebuggedReusableDoor : MonoBehaviour
 {
     [Header("UI")]
     public GameObject instructionText;
@@ -16,18 +16,17 @@ public class ReusableDoorController : MonoBehaviour
     public string closeAnimationName = "DoorClose";
 
     [Header("Timing")]
-    public float doorOpenDuration = 3f; // Meddig maradjon nyitva
-    public bool autoClose = true; // Automatikusan becsukódjon?
+    public float doorOpenDuration = 3f;
+    public bool autoClose = true;
 
-    [Header("Key Settings")]
-    public bool requiresKey = false; // Kell-e kulcs?
-    public HorrorInventorySystem.ItemType requiredKeyType = HorrorInventorySystem.ItemType.Key;
+    [Header("Debug")]
+    public bool showDebugLogs = true;
 
     private Animator doorAnimator;
     private bool playerInRange = false;
     private bool isDoorOpen = false;
     private bool isAnimating = false;
-    private HorrorInventorySystem inventorySystem;
+    private Collider triggerCollider;
 
     void Start()
     {
@@ -37,98 +36,104 @@ public class ReusableDoorController : MonoBehaviour
         if (doorObject != null)
             doorAnimator = doorObject.GetComponent<Animator>();
 
-        // Find inventory system
-        inventorySystem = FindObjectOfType<HorrorInventorySystem>();
+        // Get trigger collider
+        triggerCollider = GetComponent<Collider>();
+
+        if (triggerCollider != null && !triggerCollider.isTrigger)
+        {
+            Debug.LogError("HIBA: Collider nem trigger! Állítsd be Is Trigger-t!");
+        }
+
+        DebugLog("Door inicializálva");
     }
 
     void OnTriggerEnter(Collider other)
     {
+        DebugLog($"OnTriggerEnter - Collider: {other.name}, Tag: {other.tag}");
+
         if (other.CompareTag("Player"))
         {
             playerInRange = true;
+            DebugLog("Játékos belépett a trigger-be");
 
             if (instructionText != null && !isDoorOpen)
             {
-                if (requiresKey)
-                {
-                    instructionText.SetActive(true);
-                    // Show different message based on key availability
-                    UnityEngine.UI.Text txtComponent = instructionText.GetComponent<UnityEngine.UI.Text>();
-                    if (txtComponent != null)
-                    {
-                        if (HasRequiredKey())
-                        {
-                            txtComponent.text = "[E] Ajtó kinyitása kulccsal";
-                        }
-                        else
-                        {
-                            txtComponent.text = "Zárva - Kulcs szükséges";
-                        }
-                    }
-                }
-                else
-                {
-                    instructionText.SetActive(true);
-                }
+                instructionText.SetActive(true);
+                DebugLog("Instruction megjelenítve");
             }
         }
     }
 
     void OnTriggerExit(Collider other)
     {
+        DebugLog($"OnTriggerExit - Collider: {other.name}");
+
         if (other.CompareTag("Player"))
         {
             playerInRange = false;
+            DebugLog("Játékos kilépett a trigger-bõl");
 
             if (instructionText != null)
+            {
                 instructionText.SetActive(false);
+                DebugLog("Instruction elrejtve");
+            }
+        }
+    }
+
+    void OnTriggerStay(Collider other)
+    {
+        // Folyamatosan ellenõrizzük hogy a játékos bent van-e
+        if (other.CompareTag("Player"))
+        {
+            if (!playerInRange)
+            {
+                DebugLog("OnTriggerStay - Player range újra true");
+                playerInRange = true;
+            }
         }
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E) && playerInRange && !isAnimating)
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            if (isDoorOpen)
+            DebugLog($"E lenyomva - playerInRange: {playerInRange}, isAnimating: {isAnimating}, isDoorOpen: {isDoorOpen}");
+
+            if (playerInRange && !isAnimating)
             {
-                // Close door
-                CloseDoor();
-            }
-            else
-            {
-                // Open door
-                if (requiresKey)
+                if (isDoorOpen)
                 {
-                    if (HasRequiredKey())
-                    {
-                        OpenDoor();
-                    }
-                    else
-                    {
-                        // Play locked sound or show message
-                        Debug.Log("Nincs megfelelõ kulcsod!");
-                    }
+                    DebugLog("Ajtó bezárása...");
+                    CloseDoor();
                 }
                 else
                 {
+                    DebugLog("Ajtó nyitása...");
                     OpenDoor();
                 }
             }
         }
     }
 
-    bool HasRequiredKey()
-    {
-        if (inventorySystem == null) return false;
-        return inventorySystem.HasItem(requiredKeyType);
-    }
-
     void OpenDoor()
     {
-        if (doorAnimator == null || isAnimating) return;
+        if (doorAnimator == null)
+        {
+            Debug.LogError("HIBA: doorAnimator null!");
+            return;
+        }
+
+        if (isAnimating)
+        {
+            DebugLog("Már animálódik, skip");
+            return;
+        }
 
         isAnimating = true;
         isDoorOpen = true;
+
+        DebugLog("OpenDoor végrehajtva");
 
         // Hide instruction
         if (instructionText != null)
@@ -136,39 +141,37 @@ public class ReusableDoorController : MonoBehaviour
 
         // Play animation
         doorAnimator.Play(openAnimationName);
+        DebugLog($"Animáció lejátszva: {openAnimationName}");
 
         // Play sound
         if (doorOpenSound != null)
             doorOpenSound.Play();
 
-        // Start close timer if auto-close is enabled
+        // Start auto-close
         if (autoClose)
         {
             StartCoroutine(AutoCloseDoor());
         }
         else
         {
-            isAnimating = false;
+            StartCoroutine(ResetAnimatingFlag());
         }
     }
 
     void CloseDoor()
     {
-        if (doorAnimator == null || isAnimating) return;
+        if (doorAnimator == null || !isDoorOpen) return;
 
         isAnimating = true;
         isDoorOpen = false;
 
-        // Play close animation (if you have one)
+        DebugLog("CloseDoor végrehajtva");
+
+        // Play close animation
         if (!string.IsNullOrEmpty(closeAnimationName))
         {
             doorAnimator.Play(closeAnimationName);
-        }
-        else
-        {
-            // If no close animation, play open animation backwards
-            doorAnimator.Play(openAnimationName);
-            doorAnimator.SetFloat("Speed", -1f);
+            DebugLog($"Animáció lejátszva: {closeAnimationName}");
         }
 
         // Play close sound
@@ -180,37 +183,73 @@ public class ReusableDoorController : MonoBehaviour
 
     IEnumerator AutoCloseDoor()
     {
+        DebugLog($"AutoClose timer kezdõdött ({doorOpenDuration}s)");
+
+        // Wait for animation to finish
+        yield return new WaitForSeconds(1f);
+        isAnimating = false;
+
+        // Show instruction if player still there
+        if (playerInRange && instructionText != null)
+        {
+            instructionText.SetActive(true);
+            DebugLog("Instruction újra megjelenítve (nyitott ajtónál)");
+        }
+
+        // Wait before closing
         yield return new WaitForSeconds(doorOpenDuration);
 
-        CloseDoor();
+        if (isDoorOpen)
+        {
+            DebugLog("Auto-close aktiválva");
+            CloseDoor();
+        }
     }
 
     IEnumerator ResetDoorState()
     {
-        yield return new WaitForSeconds(1f); // Wait for animation to finish
+        yield return new WaitForSeconds(1f);
 
         isAnimating = false;
+        DebugLog($"Animating flag reset - playerInRange: {playerInRange}");
 
         // Show instruction again if player still in range
+        if (playerInRange && instructionText != null && !isDoorOpen)
+        {
+            instructionText.SetActive(true);
+            DebugLog("Instruction újra megjelenítve (zárt ajtónál)");
+        }
+    }
+
+    IEnumerator ResetAnimatingFlag()
+    {
+        yield return new WaitForSeconds(1f);
+        isAnimating = false;
+
         if (playerInRange && instructionText != null)
         {
             instructionText.SetActive(true);
         }
     }
 
-    // Public method to lock/unlock door from other scripts
-    public void SetLocked(bool locked)
+    void DebugLog(string message)
     {
-        requiresKey = locked;
+        if (showDebugLogs)
+        {
+            Debug.Log($"[DOOR {gameObject.name}] {message}");
+        }
     }
 
-    public void ForceOpen()
+    // Gizmo a Scene view-ban
+    void OnDrawGizmos()
     {
-        OpenDoor();
-    }
+        if (triggerCollider == null)
+            triggerCollider = GetComponent<Collider>();
 
-    public void ForceClose()
-    {
-        CloseDoor();
+        if (triggerCollider != null)
+        {
+            Gizmos.color = playerInRange ? Color.green : Color.yellow;
+            Gizmos.DrawWireCube(transform.position + triggerCollider.bounds.center, triggerCollider.bounds.size);
+        }
     }
 }
