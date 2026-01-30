@@ -43913,6 +43913,10 @@ PrefabInstance:
       propertyPath: m_FOVAxisMode
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5638143663122756744, guid: fa4e56ac64334434db5939b6d93bec43, type: 3}
+      propertyPath: m_RenderPostProcessing
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8202162988410841196, guid: fa4e56ac64334434db5939b6d93bec43, type: 3}
       propertyPath: m_Name
       value: Player
