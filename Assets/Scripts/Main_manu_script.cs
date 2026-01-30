@@ -7,4 +7,10 @@ public class Main_manu_script : MonoBehaviour
     {
         SceneManager.LoadScene("Hospital_main");
     }
+
+    public void QuitGame()
+    {
+        UnityEditor.EditorApplication.isPlaying = false;
+        Application.Quit();
+    }
 }
