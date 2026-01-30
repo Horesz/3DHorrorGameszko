@@ -35037,6 +35037,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5d9c5baea1407914486c3f1d6c45d425, type: 3}
+--- !u!4 &179291108 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1030446754595880843, guid: fa4e56ac64334434db5939b6d93bec43, type: 3}
+  m_PrefabInstance: {fileID: 1791727339}
+  m_PrefabAsset: {fileID: 0}
 --- !u!82 &233506334 stripped
 AudioSource:
   m_CorrespondingSourceObject: {fileID: 5059128383449191052, guid: 3f4a274dc41038648b4d7f6bf36d3798, type: 3}
@@ -39581,11 +39586,6 @@ MonoBehaviour:
   promptText: {fileID: 634271394}
   playerCamera: {fileID: 35501647}
   inventory: {fileID: 1801431724}
---- !u!4 &923002171 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8833880399636984534, guid: fa4e56ac64334434db5939b6d93bec43, type: 3}
-  m_PrefabInstance: {fileID: 1791727339}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &923002172
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39599,12 +39599,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flashlightSource: {fileID: 1977512658}
-  isOn: 1
+  isOn: 0
   useBattery: 1
   maxBattery: 100
   currentBattery: 100
-  drainRate: 2
-  maxIntensity: 3
+  drainRate: 1
+  maxIntensity: 50
 --- !u!1 &924561776
 GameObject:
   m_ObjectHideFlags: 0
@@ -44257,7 +44257,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 8833880399636984534, guid: fa4e56ac64334434db5939b6d93bec43, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 1030446754595880843, guid: fa4e56ac64334434db5939b6d93bec43, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1977512660}
     m_AddedComponents:
@@ -45377,13 +45377,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1977512657}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.70747703, z: -0, w: -0.7067364}
-  m_LocalPosition: {x: 0, y: 0, z: -2}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: -1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 923002171}
-  m_LocalEulerAnglesHint: {x: 0, y: 269.94, z: 0}
+  m_Father: {fileID: 179291108}
+  m_LocalEulerAnglesHint: {x: 0, y: 360, z: 0}
 --- !u!1 &1985756203
 GameObject:
   m_ObjectHideFlags: 0
