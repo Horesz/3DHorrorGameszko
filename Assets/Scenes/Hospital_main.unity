@@ -36849,13 +36849,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Television
       objectReference: {fileID: 0}
+    - target: {fileID: 1679347066862348, guid: e10681668e69faf44abb588101ae0d74, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4429856243470314, guid: e10681668e69faf44abb588101ae0d74, type: 3}
       propertyPath: m_LocalPosition.x
       value: -57.33
       objectReference: {fileID: 0}
     - target: {fileID: 4429856243470314, guid: e10681668e69faf44abb588101ae0d74, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -5.23
+      value: -6.986
       objectReference: {fileID: 0}
     - target: {fileID: 4429856243470314, guid: e10681668e69faf44abb588101ae0d74, type: 3}
       propertyPath: m_LocalPosition.z
@@ -41296,12 +41300,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fc4af36b7b121c42a888e86834d4356, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  riseHeight: 1.5
+  riseHeight: 2
   riseDuration: 2
   spinStartSpeed: 30
-  spinMaxSpeed: 400
+  spinMaxSpeed: 900
   spinAccelerationTime: 2
-  attackSpeed: 8
+  attackSpeed: 20
   oneShot: 1
 --- !u!43 &1369640302
 Mesh:
